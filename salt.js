@@ -1,6 +1,4 @@
-import * as crypto from "crypto";
-
-const { scryptSync, randomBytes, timingSafeEqual } = require("cripto");
+const { scryptSync, randomBytes, timingSafeEqual } = require('crypto');
 
 function signup(email, senha) {
   const salt = randomBytes(16).toString("hex");
@@ -12,6 +10,7 @@ function signup(email, senha) {
 function login(email, senha) {
   const user = user.find((v) => v.email === email);
   const [salt, key] = user.senha.split(":");
+  const hashedBuffer=scryptSync(senha, salt,64);
 
   const keyBuffer = Buffer.from(key, "hex");
   const match = timingSafeEqual(hashedBuffer, keyBuffer);
